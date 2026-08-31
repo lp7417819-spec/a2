@@ -93,7 +93,7 @@ $pageDesc = "Explore Orbit Dial Crest's celestial mechanical timepieces, featuri
 
           <div class="hero-visual-card">
             <div class="hero-image-frame">
-              <img src="https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=900&q=85" alt="Orbit Dial Crest Celestial Luxury Mechanical Timepiece">
+              <img src="assets/images/hero-watch.jpg" alt="Orbit Dial Crest Celestial Luxury Mechanical Timepiece" loading="eager">
             </div>
             <div class="floating-accent-card">
               <div class="accent-tourbillon-icon">⚙</div>
@@ -127,7 +127,7 @@ $pageDesc = "Explore Orbit Dial Crest's celestial mechanical timepieces, featuri
           <!-- Watch 1 -->
           <div class="luxury-card collection-item" data-category="tourbillon">
             <div class="card-img-wrap">
-              <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=700&q=80" alt="The Orbit Grand Celestial Tourbillon">
+              <img src="assets/images/tourbillon-vault.jpg" alt="The Orbit Grand Celestial Tourbillon" loading="lazy">
               <span class="card-tag-pill">Haute Complication</span>
             </div>
             <div class="card-body">
@@ -140,7 +140,7 @@ $pageDesc = "Explore Orbit Dial Crest's celestial mechanical timepieces, featuri
           <!-- Watch 2 -->
           <div class="luxury-card collection-item" data-category="perpetual">
             <div class="card-img-wrap">
-              <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=700&q=80" alt="The Orbit Equinox Perpetual Calendar">
+              <img src="assets/images/perpetual-calendar.jpg" alt="The Orbit Equinox Perpetual Calendar" loading="lazy">
               <span class="card-tag-pill">Astronomical Series</span>
             </div>
             <div class="card-body">
@@ -153,7 +153,7 @@ $pageDesc = "Explore Orbit Dial Crest's celestial mechanical timepieces, featuri
           <!-- Watch 3 -->
           <div class="luxury-card collection-item" data-category="chronograph">
             <div class="card-img-wrap">
-              <img src="https://images.unsplash.com/photo-1547996160-71dfabb1a7b1?auto=format&fit=crop&w=700&q=80" alt="The Orbit Chrono-Monopoussoir Deep Ocean">
+              <img src="assets/images/monopusher-chrono.jpg" alt="The Orbit Chrono-Monopoussoir Deep Ocean" loading="lazy">
               <span class="card-tag-pill">Chronometer Grade</span>
             </div>
             <div class="card-body">
@@ -209,7 +209,7 @@ $pageDesc = "Explore Orbit Dial Crest's celestial mechanical timepieces, featuri
         <div class="grid-2">
           <div class="lookbook-visual">
             <div class="hero-image-frame">
-              <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=900&q=85" alt="Haute Horlogerie Timepiece on Wrist in Luxury Setting">
+              <img src="assets/images/lookbook-wrist.jpg" alt="Haute Horlogerie Timepiece on Wrist in Luxury Setting" loading="lazy">
             </div>
           </div>
           <div class="lookbook-content">
@@ -392,7 +392,7 @@ $pageDesc = "Explore Orbit Dial Crest's celestial mechanical timepieces, featuri
         <div class="grid-3">
           <div class="luxury-card">
             <div class="card-img-wrap">
-              <img src="https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=700&q=80" alt="Evolution of Astronomical Watch Complications">
+              <img src="assets/images/blog-astronomical.jpg" alt="Evolution of Astronomical Watch Complications" loading="lazy">
               <span class="card-tag-pill">Horology Theory</span>
             </div>
             <div class="card-body">
@@ -404,7 +404,7 @@ $pageDesc = "Explore Orbit Dial Crest's celestial mechanical timepieces, featuri
 
           <div class="luxury-card">
             <div class="card-img-wrap">
-              <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=700&q=80" alt="Mastering the Tourbillon">
+              <img src="assets/images/blog-tourbillon.jpg" alt="Mastering the Tourbillon" loading="lazy">
               <span class="card-tag-pill">Micro-Engineering</span>
             </div>
             <div class="card-body">
@@ -416,7 +416,7 @@ $pageDesc = "Explore Orbit Dial Crest's celestial mechanical timepieces, featuri
 
           <div class="luxury-card">
             <div class="card-img-wrap">
-              <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=700&q=80" alt="Meteorite Dials in Luxury Watches">
+              <img src="assets/images/blog-meteorite.jpg" alt="Meteorite Dials in Luxury Watches" loading="lazy">
               <span class="card-tag-pill">Metallurgy</span>
             </div>
             <div class="card-body">
